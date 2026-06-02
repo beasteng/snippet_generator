@@ -20,26 +20,67 @@ pip install -r src/snippet_generator/requirements.txt
 ## Requirements
 
 - Python 3.10+
-- OpenAI API key (or compatible LLM provider)
+- An API key for your chosen LLM provider (OpenAI, Anthropic, or a local LLM server)
 
 ## Usage
 
-### Set up your API key
+### OpenAI (GPT) Users
+
+Set your OpenAI API key and use the default model:
 
 ```bash
-export OPENAI_API_KEY="your-api-key"
-```
+export OPENAI_API_KEY="your-openai-api-key"
 
-### Generate snippets
-
-```bash
 # Generate 30 Python snippets
 python -m src.snippet_generator.main --language python
 
 # Generate 10 JavaScript snippets with React
 python -m src.snippet_generator.main --language javascript --library react --count 10
+```
 
-# Generate snippets with custom tuning
+To use a different OpenAI model, edit [`src/snippet_generator/config.py`](src/snippet_generator/config.py) and set `MODEL_NAME` to e.g. `openai:gpt-4o`.
+
+### Claude (Opus) Users
+
+Set your Anthropic API key and update the model in config:
+
+```bash
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+```
+
+Edit [`src/snippet_generator/config.py`](src/snippet_generator/config.py):
+```python
+MODEL_NAME = "anthropic:claude-3-5-sonnet-20240620"
+```
+
+Then run:
+```bash
+python -m src.snippet_generator.main --language python
+```
+
+### Local LLM Users
+
+If you are running a local LLM server (e.g., Ollama, LM Studio, or llama.cpp server), configure the endpoint:
+
+Edit [`src/snippet_generator/config.py`](src/snippet_generator/config.py):
+```python
+MODEL_NAME = "ollama:llama3.1"
+```
+
+Or for a generic OpenAI-compatible local server:
+```python
+MODEL_NAME = "openai:gpt-4o-mini"
+# And set the base URL via environment variable if needed
+```
+
+Then run:
+```bash
+python -m src.snippet_generator.main --language python
+```
+
+### Generate snippets with custom tuning
+
+```bash
 python -m src.snippet_generator.main --language python --tune-prompt "focus on data processing patterns"
 ```
 
